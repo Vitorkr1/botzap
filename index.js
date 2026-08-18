@@ -167,6 +167,12 @@ async function startBot() {
       console.log(
         `Conectado ao WhatsApp com sucesso! Aguardando ${CONTACTS_SYNC_GRACE_MS / 1000}s pra sincronizar a agenda antes de responder mensagens.`
       );
+
+      // Marca explicitamente como "ausente" — sem isso, o socket conectado
+      // faz o WhatsApp te mostrar como "online" pros contatos o tempo todo.
+      sock.sendPresenceUpdate("unavailable").catch((err) =>
+        console.error("Erro ao marcar presença como ausente:", err)
+      );
     }
 
     if (connection === "close") {
